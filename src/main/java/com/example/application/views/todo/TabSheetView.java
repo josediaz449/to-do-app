@@ -10,9 +10,7 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabSheet;
 
 public class TabSheetView extends Div {
-    //private ToDoFormView toDoFormView;
     public TabSheetView() {
-        //toDoFormView = new ToDoFormView();
         TabSheet tabSheet = new TabSheet();
         Tab toDo = new Tab(new Span("To-Do"));
         Tab completed = new Tab(new Span("Completed"));
@@ -21,7 +19,6 @@ public class TabSheetView extends Div {
         plusButton.addThemeVariants(ButtonVariant.LUMO_ICON);
         plusButton.setAriaLabel("Add item");
         plusButton.addClickListener(buttonClickEvent -> showToDoForm());
-
         tabSheet.add(toDo,new Div(plusButton));
         tabSheet.add(completed,new Div());
 
