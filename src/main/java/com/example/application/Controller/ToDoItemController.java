@@ -1,6 +1,6 @@
 package com.example.application.Controller;
 
-import com.example.application.Model.ToDoItem;
+import com.example.application.Entity.ToDoItem;
 import com.example.application.Service.ToDoItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 
-@RequestMapping(path="/api/v1/todoItem/")
+@RequestMapping(path="/todoItem/")
 public class ToDoItemController {
     @Autowired
     private ToDoItemService toDoItemService;
@@ -20,7 +20,7 @@ public class ToDoItemController {
         return toDoItemService.getAllToDoItems();
     }
 
-    @GetMapping
+    @GetMapping("{id}")
     public ToDoItem getToDoItem(@Param("id") String id){
         return toDoItemService.getToDoItem(Long.valueOf(id));
     }
@@ -34,8 +34,8 @@ public class ToDoItemController {
     public ToDoItem updateToDoItem(@RequestBody ToDoItem toDoItem){
         return toDoItemService.updateToDoItem(toDoItem);
     }
-    @DeleteMapping
-    public void deleteToDoItem(String id){
+    @DeleteMapping("{id}")
+    public void deleteToDoItem(@PathVariable("id") String id){
         toDoItemService.deleteToDoItem(Long.valueOf(id));
     }
 

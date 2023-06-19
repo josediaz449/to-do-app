@@ -1,4 +1,4 @@
-package com.example.application.Model;
+package com.example.application.Entity;
 
 public enum Priority {
     LOW,

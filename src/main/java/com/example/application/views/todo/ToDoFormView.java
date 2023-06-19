@@ -1,7 +1,7 @@
 package com.example.application.views.todo;
 
-import com.example.application.Model.Priority;
-import com.example.application.Model.ToDoItem;
+import com.example.application.Entity.Priority;
+import com.example.application.Entity.ToDoItem;
 import com.example.application.Service.ToDoItemServiceImpl;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -10,17 +10,15 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class ToDoFormView extends Dialog {
     static private NumberField priority;
     static private TextField description;
-    @Autowired
-    ToDoItemServiceImpl toDoItemService = new ToDoItemServiceImpl();
-    public ToDoFormView() {
+    ToDoItemServiceImpl toDoItemService;
+    public ToDoFormView(ToDoItemServiceImpl toDoItemService) {
 
         this.setHeaderTitle("New to-do item");
-
+        this.toDoItemService = toDoItemService;
         VerticalLayout dialogLayout = createDialogLayout();
         this.add(dialogLayout);
 
@@ -56,7 +54,7 @@ public class ToDoFormView extends Dialog {
     }
     public void saveItem(){
         ToDoItem toDoItem = new ToDoItem(description.getValue(), Priority.LOW);
-        //toDoItemService.createToDoItem(toDoItem);
+        toDoItemService.createToDoItem(toDoItem);
         this.close();
     }
 }

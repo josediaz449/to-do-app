@@ -1,6 +1,6 @@
 package com.example.application.Service;
 
-import com.example.application.Model.ToDoItem;
+import com.example.application.Entity.ToDoItem;
 
 import java.util.List;
 

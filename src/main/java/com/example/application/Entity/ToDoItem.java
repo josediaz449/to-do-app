@@ -1,19 +1,21 @@
-package com.example.application.Model;
+package com.example.application.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "items")
 public class ToDoItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String description;
     private Priority priority;
     private boolean completed;
-    private LocalDate dateCreated;
+    private Date dateCreated;
     private LocalDate dateCompleted;
 
     public ToDoItem() {
@@ -23,7 +25,7 @@ public class ToDoItem {
         this.description = description;
         this.priority = priority;
         this.completed=false;
-        this.dateCreated=LocalDate.now();
+        this.dateCreated=Date.valueOf(LocalDate.now());
         this.dateCompleted = null;
     }
 

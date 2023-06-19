@@ -1,6 +1,6 @@
 package com.example.application.Service;
 
-import com.example.application.Model.ToDoItem;
+import com.example.application.Entity.ToDoItem;
 import com.example.application.Repository.ToDoItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public class ToDoItemServiceImpl implements ToDoItemService{
-
     @Autowired
     ToDoItemRepository toDoItemRepository;
     @Override

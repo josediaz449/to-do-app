@@ -1,5 +1,6 @@
 package com.example.application.views.todo;
 
+import com.example.application.Service.ToDoItemServiceImpl;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -20,9 +21,10 @@ import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 @Route(value = "to-do")
 @RouteAlias(value = "")
 public class ToDoView extends VerticalLayout {
-
-    public ToDoView(){
-        TabSheetView tabSheet = new TabSheetView();
+    ToDoItemServiceImpl toDoItemService;
+    public ToDoView(ToDoItemServiceImpl toDoItemService){
+        this.toDoItemService = toDoItemService;
+        TabSheetView tabSheet = new TabSheetView(toDoItemService);
 
         add(tabSheet);
         setAlignItems(Alignment.CENTER);
