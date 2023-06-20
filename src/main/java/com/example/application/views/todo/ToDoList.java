@@ -6,45 +6,47 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.data.renderer.LitRenderer;
-import com.vaadin.flow.data.renderer.Renderer;
+import com.vaadin.flow.data.selection.SelectionEvent;
 import com.vaadin.flow.function.SerializableBiConsumer;
 
 import java.util.List;
+import java.util.Set;
 
 public class ToDoList extends Div {
     ToDoItemServiceImpl toDoItemService;
+    Grid<ToDoItem> grid;
     public ToDoList(ToDoItemServiceImpl toDoItemService) {
         this.toDoItemService = toDoItemService;
-        Grid<ToDoItem> grid = new Grid<>(ToDoItem.class, false);
-        grid.setSelectionMode(Grid.SelectionMode.MULTI);
+        grid = new Grid<>(ToDoItem.class, false);
+        grid.setSelectionMode(Grid.SelectionMode.SINGLE);
         grid.addColumn(ToDoItem::getDescription).setHeader("Description")
                 .setAutoWidth(true);
-        grid.addColumn(createStatusComponentRenderer()).setHeader("Status")
+        grid.addColumn(createPriorityComponentRenderer()).setHeader("Priority")
                 .setAutoWidth(true);
 
         List<ToDoItem> toDoItems = toDoItemService.getAllToDoItems();
         grid.setItems(toDoItems);
         grid.setAllRowsVisible(true);
+        grid.addSelectionListener(this::selectComplete);
         add(grid);
     }
-    /*
-    private static Renderer<ToDoItem> createItemRenderer() {
-        return LitRenderer.<ToDoItem>of(
-                        "<vaadin-horizontal-layout style=\"align-items: center;\" theme=\"spacing\">"
-                                + "<vaadin-avatar img=\"${item.pictureUrl}\" name=\"${item.fullName}\" alt=\"User avatar\"></vaadin-avatar>"
-                                + "  <vaadin-vertical-layout style=\"line-height: var(--lumo-line-height-m);\">"
-                                + "    <span> ${item.fullName} </span>"
-                                + "    <span style=\"font-size: var(--lumo-font-size-s); color: var(--lumo-secondary-text-color);\">"
-                                + "      ${item.email}" + "    </span>"
-                                + "  </vaadin-vertical-layout>"
-                                + "</vaadin-horizontal-layout>")
-                .withProperty("pictureUrl", Person::getPictureUrl)
-                .withProperty("fullName", Person::getFullName)
-                .withProperty("email", Person::getEmail);
+
+    private void selectComplete(SelectionEvent<Grid<ToDoItem>, ToDoItem> select) {
+        Set<ToDoItem> selectedItems = select.getAllSelectedItems();
+        for (ToDoItem toDoItem:selectedItems) {
+            toDoItem.setCompleted(true);
+            toDoItemService.updateToDoItem(toDoItem);
+        }
+        updateList();
     }
-*/
-    private static final SerializableBiConsumer<Span, ToDoItem> statusComponentUpdater = (
+
+    private void updateList() {
+        List<ToDoItem> toDoItems = toDoItemService.getAllToDoItems();
+        grid.setItems(toDoItems);
+        grid.setAllRowsVisible(true);
+    }
+
+    private static final SerializableBiConsumer<Span, ToDoItem> priorityComponentUpdater = (
             span, toDoItem) -> {
         boolean isCompleted = "true".equalsIgnoreCase(String.valueOf(toDoItem.isCompleted()));
         String theme = String.format("badge %s",
@@ -53,7 +55,7 @@ public class ToDoList extends Div {
         span.setText(String.valueOf(toDoItem.isCompleted()));
     };
 
-    private static ComponentRenderer<Span, ToDoItem> createStatusComponentRenderer() {
-        return new ComponentRenderer<>(Span::new, statusComponentUpdater);
+    private static ComponentRenderer<Span, ToDoItem> createPriorityComponentRenderer() {
+        return new ComponentRenderer<>(Span::new, priorityComponentUpdater);
     }
 }

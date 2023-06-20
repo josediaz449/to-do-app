@@ -15,7 +15,7 @@ public class ToDoItem {
     private Priority priority;
     private boolean completed;
     private Date dateCreated;
-    private LocalDate dateCompleted;
+    private Date dateCompleted;
 
     public ToDoItem() {
     }
@@ -50,13 +50,14 @@ public class ToDoItem {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+        setDateCompleted(Date.valueOf(LocalDate.now()));
     }
 
-    public LocalDate getDateCompleted() {
+    public Date getDateCompleted() {
         return dateCompleted;
     }
 
-    public void setDateCompleted(LocalDate dateCompleted) {
+    public void setDateCompleted(Date dateCompleted) {
         this.dateCompleted = dateCompleted;
     }
 }
