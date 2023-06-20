@@ -1,7 +1,6 @@
 package com.example.application.Entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 
 import java.sql.Date;
 import java.time.LocalDate;

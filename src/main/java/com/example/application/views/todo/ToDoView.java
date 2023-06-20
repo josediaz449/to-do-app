@@ -24,6 +24,7 @@ public class ToDoView extends VerticalLayout {
     ToDoItemServiceImpl toDoItemService;
     public ToDoView(ToDoItemServiceImpl toDoItemService){
         this.toDoItemService = toDoItemService;
+        this.setSizeFull();
         TabSheetView tabSheet = new TabSheetView(toDoItemService);
 
         add(tabSheet);
