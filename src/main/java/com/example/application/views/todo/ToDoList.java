@@ -9,6 +9,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.data.renderer.Renderer;
 import com.vaadin.flow.data.selection.SelectionEvent;
 import com.vaadin.flow.function.SerializableBiConsumer;
 import com.vaadin.flow.component.button.Button;
@@ -43,12 +44,15 @@ public class ToDoList extends Div {
                     button.addClickListener(e -> this.removeTodoItem(todoItem));
                     button.setIcon(new Icon(VaadinIcon.TRASH));
                 })).setHeader("Delete");
+        grid.addColumn(createCompletedComponentRenderer()).setHeader("Completed Status")
+                .setAutoWidth(true);
 
         List<ToDoItem> toDoItems = toDoItemService.getAllToDoItems();
         grid.setItems(toDoItems);
         grid.setAllRowsVisible(true);
         add(grid);
     }
+
 
     private void removeTodoItem(ToDoItem todoItem) {
         toDoItemService.deleteToDoItem(todoItem.getId());
@@ -69,6 +73,11 @@ public class ToDoList extends Div {
 
     private static final SerializableBiConsumer<Span, ToDoItem> priorityComponentUpdater = (
             span, toDoItem) -> {
+        span.getElement().setAttribute("theme", "badge");
+        span.setText(String.valueOf(toDoItem.getPriority()));
+    };
+    private static final SerializableBiConsumer<Span, ToDoItem> completeComponentUpdater = (
+            span, toDoItem) -> {
         boolean isCompleted = "true".equalsIgnoreCase(String.valueOf(toDoItem.isCompleted()));
         String theme = String.format("badge %s",
                 isCompleted ? "success" : "error");
@@ -78,5 +87,8 @@ public class ToDoList extends Div {
 
     private static ComponentRenderer<Span, ToDoItem> createPriorityComponentRenderer() {
         return new ComponentRenderer<>(Span::new, priorityComponentUpdater);
+    }
+    private static ComponentRenderer<Span, ToDoItem> createCompletedComponentRenderer() {
+        return new ComponentRenderer<>(Span::new, completeComponentUpdater);
     }
 }
