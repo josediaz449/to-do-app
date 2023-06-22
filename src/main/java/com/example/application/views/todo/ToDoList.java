@@ -22,7 +22,15 @@ public class ToDoList extends Div {
     public ToDoList(ToDoItemServiceImpl toDoItemService) {
         this.toDoItemService = toDoItemService;
         grid = new Grid<>(ToDoItem.class, false);
-        grid.setSelectionMode(Grid.SelectionMode.MULTI);
+        grid.setSelectionMode(Grid.SelectionMode.NONE);
+        grid.addColumn(
+                new ComponentRenderer<>(Button::new, (button, todoItem) -> {
+                    button.addThemeVariants(ButtonVariant.LUMO_ICON,
+                            ButtonVariant.LUMO_SUCCESS,
+                            ButtonVariant.LUMO_TERTIARY);
+                    button.addClickListener(e -> this.selectComplete(todoItem));
+                    button.setIcon(new Icon(VaadinIcon.CHECK));
+                })).setHeader("Mark as Complete").setAutoWidth(true);
         grid.addColumn(ToDoItem::getDescription).setHeader("Description")
                 .setAutoWidth(true);
         grid.addColumn(createPriorityComponentRenderer()).setHeader("Priority")
@@ -34,12 +42,11 @@ public class ToDoList extends Div {
                             ButtonVariant.LUMO_TERTIARY);
                     button.addClickListener(e -> this.removeTodoItem(todoItem));
                     button.setIcon(new Icon(VaadinIcon.TRASH));
-                })).setHeader("Manage");
+                })).setHeader("Delete");
 
         List<ToDoItem> toDoItems = toDoItemService.getAllToDoItems();
         grid.setItems(toDoItems);
         grid.setAllRowsVisible(true);
-        grid.addSelectionListener(this::selectComplete);
         add(grid);
     }
 
@@ -48,12 +55,9 @@ public class ToDoList extends Div {
         this.updateList();
     }
 
-    private void selectComplete(SelectionEvent<Grid<ToDoItem>, ToDoItem> select) {
-        Set<ToDoItem> selectedItems = select.getAllSelectedItems();
-        for (ToDoItem toDoItem:selectedItems) {
-            toDoItem.setCompleted(true);
-            toDoItemService.updateToDoItem(toDoItem);
-        }
+    private void selectComplete(ToDoItem toDoItem) {
+        toDoItem.setCompleted(true);
+        toDoItemService.updateToDoItem(toDoItem);
         updateList();
     }
 
