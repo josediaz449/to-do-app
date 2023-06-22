@@ -9,13 +9,9 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.data.renderer.Renderer;
-import com.vaadin.flow.data.selection.SelectionEvent;
 import com.vaadin.flow.function.SerializableBiConsumer;
 import com.vaadin.flow.component.button.Button;
-
 import java.util.List;
-import java.util.Set;
 
 public class ToDoList extends Div {
     ToDoItemServiceImpl toDoItemService;
