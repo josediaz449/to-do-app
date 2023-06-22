@@ -14,19 +14,21 @@ import com.vaadin.flow.component.tabs.TabSheetVariant;
 
 public class TabSheetView extends Div {
     ToDoItemServiceImpl toDoItemService;
+    ToDoList toDoList;
     public TabSheetView(ToDoItemServiceImpl toDoItemService) {
         this.toDoItemService =toDoItemService;
         TabSheet tabSheet = new TabSheet();
         Tab toDo = new Tab(new Span("To-Do"));
         Tab completed = new Tab(new Span("Completed"));
 
+        toDoList = new ToDoList(toDoItemService);
 
         Button plusButton = new Button(new Icon(VaadinIcon.PLUS));
         plusButton.addThemeVariants(ButtonVariant.LUMO_ICON);
         plusButton.setAriaLabel("Add item");
         plusButton.addClickListener(buttonClickEvent -> showToDoForm());
         plusButton.addThemeVariants(ButtonVariant.LUMO_LARGE);
-        tabSheet.add(toDo,new HorizontalLayout(new ToDoList(toDoItemService),plusButton));
+        tabSheet.add(toDo,new HorizontalLayout(toDoList,plusButton));
         tabSheet.add(completed,new Div());
         tabSheet.addThemeVariants(TabSheetVariant.LUMO_TABS_CENTERED);
         add(tabSheet);
@@ -34,7 +36,7 @@ public class TabSheetView extends Div {
 
     private void showToDoForm() {
         ToDoFormView toDoFormView = new ToDoFormView(toDoItemService);
-
         add(toDoFormView);
+        toDoFormView.addOpenedChangeListener(dialogCloseActionEvent -> toDoList.updateList());
     }
 }

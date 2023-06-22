@@ -60,4 +60,8 @@ public class ToDoItem {
     public void setDateCompleted(Date dateCompleted) {
         this.dateCompleted = dateCompleted;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
