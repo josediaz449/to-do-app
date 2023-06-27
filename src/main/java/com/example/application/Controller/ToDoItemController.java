@@ -16,7 +16,7 @@ public class ToDoItemController {
     private ToDoItemService toDoItemService;
 
     @GetMapping("all")
-    public List<ToDoItem> getAllCustomers(){
+    public List<ToDoItem> getAllToDoItems(){
         return toDoItemService.getAllToDoItems();
     }
 

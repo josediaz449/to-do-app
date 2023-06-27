@@ -29,8 +29,6 @@ public class ToDoView extends VerticalLayout {
 
         add(tabSheet);
         setAlignItems(Alignment.CENTER);
-
-
     }
 
 }
