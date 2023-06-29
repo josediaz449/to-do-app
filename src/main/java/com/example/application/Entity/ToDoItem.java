@@ -50,9 +50,13 @@ public class ToDoItem {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
-        setDateCompleted(Date.valueOf(LocalDate.now()));
+        if(completed){
+            setDateCompleted(Date.valueOf(LocalDate.now()));
+        }
+        else {
+            setDateCompleted(null);
+        }
     }
-
     public Date getDateCompleted() {
         return dateCompleted;
     }
@@ -62,6 +66,10 @@ public class ToDoItem {
     }
 
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
     }
 }

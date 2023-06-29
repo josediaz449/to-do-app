@@ -22,9 +22,8 @@ public class ToDoFormView extends Dialog {
     static private TextField description;
     ToDoItemServiceImpl toDoItemService;
     public ToDoFormView(ToDoItemServiceImpl toDoItemService) {
-
-        this.setHeaderTitle("New to-do item");
         this.toDoItemService = toDoItemService;
+        this.setHeaderTitle("New to-do item");
         VerticalLayout dialogLayout = createDialogLayout();
         this.add(dialogLayout);
 
@@ -35,23 +34,27 @@ public class ToDoFormView extends Dialog {
         this.getFooter().add(cancelButton);
         this.getFooter().add(saveButton);
 
-
         this.open();
     }
     private static VerticalLayout createDialogLayout() {
-
-        priority = new ComboBox<>();
-        priority.setItems(Priority.values());
-        priority.setRequired(true);
+        createPriorityComboBox();
         description = new TextField("Description");
-
         VerticalLayout dialogLayout = new VerticalLayout(description,priority);
+        customizeDialogLayout(dialogLayout);
+        return dialogLayout;
+    }
+
+    private static void customizeDialogLayout(VerticalLayout dialogLayout) {
         dialogLayout.setPadding(false);
         dialogLayout.setSpacing(false);
         dialogLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
         dialogLayout.getStyle().set("width", "18rem").set("max-width", "100%");
+    }
 
-        return dialogLayout;
+    private static void createPriorityComboBox() {
+        priority = new ComboBox<>();
+        priority.setItems(Priority.values());
+        priority.setRequired(true);
     }
 
     private Button createSaveButton(Dialog dialog) {
@@ -62,28 +65,47 @@ public class ToDoFormView extends Dialog {
     }
     public void saveItem(){
         if(description.isEmpty()||priority.isEmpty()){
-            Notification notification = new Notification();
-            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification notification = createNotification();
 
             Div text = new Div(new Text("Fill in all fields."));
 
-            Button closeButton = new Button(new Icon("lumo", "cross"));
-            closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
-            closeButton.getElement().setAttribute("aria-label", "Close");
-            closeButton.addClickListener(event -> {
-                notification.close();
-            });
+            Button closeButton = createNotificationCloseButton(notification);
 
-            HorizontalLayout layout = new HorizontalLayout(text, closeButton);
-            layout.setAlignItems(FlexComponent.Alignment.CENTER);
+            HorizontalLayout layout = createHorizontalLayout(text, closeButton);
 
             notification.add(layout);
             notification.open();
         }
         else {
-            ToDoItem toDoItem = new ToDoItem(description.getValue(), priority.getValue());
-            toDoItemService.createToDoItem(toDoItem);
-            this.close();
+            addNewToDoItem();
         }
+    }
+
+    private void addNewToDoItem() {
+        ToDoItem toDoItem = new ToDoItem(description.getValue(), priority.getValue());
+        toDoItemService.createToDoItem(toDoItem);
+        this.close();
+    }
+
+    private static HorizontalLayout createHorizontalLayout(Div text, Button closeButton) {
+        HorizontalLayout layout = new HorizontalLayout(text, closeButton);
+        layout.setAlignItems(FlexComponent.Alignment.CENTER);
+        return layout;
+    }
+
+    private static Notification createNotification() {
+        Notification notification = new Notification();
+        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        return notification;
+    }
+
+    private static Button createNotificationCloseButton(Notification notification) {
+        Button closeButton = new Button(new Icon("lumo", "cross"));
+        closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+        closeButton.getElement().setAttribute("aria-label", "Close");
+        closeButton.addClickListener(event -> {
+            notification.close();
+        });
+        return closeButton;
     }
 }

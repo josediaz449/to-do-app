@@ -11,11 +11,6 @@ import com.vaadin.flow.function.SerializableBiConsumer;
 import java.util.List;
 
 public abstract class ToDoGrid extends Div {
-    private static final SerializableBiConsumer<Span, ToDoItem> priorityComponentUpdater = (
-            span, toDoItem) -> {
-        span.getElement().setAttribute("theme", "badge");
-        span.setText(String.valueOf(toDoItem.getPriority()));
-    };
     ToDoItemServiceImpl toDoItemService;
     Grid<ToDoItem> grid;
 
@@ -23,13 +18,22 @@ public abstract class ToDoGrid extends Div {
         this.toDoItemService = toDoItemService;
         grid = new Grid<>(ToDoItem.class, false);
     }
-
+    private static final SerializableBiConsumer<Span, ToDoItem> priorityComponentUpdater = (
+            span, toDoItem) -> {
+        span.getElement().setAttribute("theme", "badge");
+        span.setText(String.valueOf(toDoItem.getPriority()));
+    };
     protected static ComponentRenderer<Span, ToDoItem> createPriorityComponentRenderer() {
         return new ComponentRenderer<>(Span::new, priorityComponentUpdater);
     }
 
     protected void selectComplete(ToDoItem toDoItem) {
         toDoItem.setCompleted(true);
+        toDoItemService.updateToDoItem(toDoItem);
+        updateList();
+    }
+    protected void selectIncomplete(ToDoItem toDoItem) {
+        toDoItem.setCompleted(false);
         toDoItemService.updateToDoItem(toDoItem);
         updateList();
     }
