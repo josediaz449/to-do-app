@@ -31,6 +31,9 @@ public class DoneList extends ToDoGrid{
                 new ComponentRenderer<>(Button::new, this::createDeleteButton)).setHeader("Delete");
         grid.addColumn(ToDoItem::getDateCompleted).setHeader("Date Completed")
                 .setAutoWidth(true);
+        grid.addColumn(
+                new ComponentRenderer<>(Button::new, this::createCopyButton)).setHeader("Copy over to To-Do").setAutoWidth(true);
+
     }
     private void createDeleteButton(Button button, ToDoItem todoItem) {
         button.addThemeVariants(ButtonVariant.LUMO_ICON,
@@ -38,6 +41,12 @@ public class DoneList extends ToDoGrid{
                 ButtonVariant.LUMO_TERTIARY);
         button.addClickListener(e -> this.removeTodoItem(todoItem));
         button.setIcon(new Icon(VaadinIcon.TRASH));
+    }
+    private void createCopyButton(Button button, ToDoItem todoItem) {
+        button.addThemeVariants(ButtonVariant.LUMO_ICON,
+                ButtonVariant.LUMO_TERTIARY);
+        button.addClickListener(e -> this.toDoItemService.createToDoItem(new ToDoItem(todoItem.getDescription(),todoItem.getPriority())));
+        button.setIcon(new Icon(VaadinIcon.EDIT));
     }
 
     private void createIncompleteButton(Button button, ToDoItem todoItem) {

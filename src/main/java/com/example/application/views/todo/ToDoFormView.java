@@ -27,10 +27,8 @@ public class ToDoFormView extends Dialog {
         VerticalLayout dialogLayout = createDialogLayout();
         this.add(dialogLayout);
 
-        Button saveButton = createSaveButton(this);
-        Button cancelButton = new Button("Cancel", e -> {
-            this.close();
-        });
+        Button saveButton = createSaveButton();
+        Button cancelButton = new Button("Cancel", e -> this.close());
         this.getFooter().add(cancelButton);
         this.getFooter().add(saveButton);
 
@@ -57,7 +55,7 @@ public class ToDoFormView extends Dialog {
         priority.setRequired(true);
     }
 
-    private Button createSaveButton(Dialog dialog) {
+    private Button createSaveButton() {
         Button saveButton = new Button("Add", e -> this.saveItem());
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
@@ -103,9 +101,7 @@ public class ToDoFormView extends Dialog {
         Button closeButton = new Button(new Icon("lumo", "cross"));
         closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
         closeButton.getElement().setAttribute("aria-label", "Close");
-        closeButton.addClickListener(event -> {
-            notification.close();
-        });
+        closeButton.addClickListener(event -> notification.close());
         return closeButton;
     }
 }

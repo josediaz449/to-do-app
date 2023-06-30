@@ -8,8 +8,6 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.function.SerializableBiConsumer;
 
-import java.util.List;
-
 public abstract class ToDoGrid extends Div {
     ToDoItemServiceImpl toDoItemService;
     Grid<ToDoItem> grid;

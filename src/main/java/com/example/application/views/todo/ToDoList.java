@@ -49,7 +49,6 @@ public class ToDoList extends ToDoGrid {
     @Override
     void updateList() {
         List<ToDoItem> toDoItems = toDoItemService.getAllNotCompletedToDoItems();
-        grid.setItems(toDoItems);
         grid.setAllRowsVisible(true);
     }
 }
