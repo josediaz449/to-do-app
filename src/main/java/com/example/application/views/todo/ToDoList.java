@@ -50,8 +50,13 @@ public class ToDoList extends ToDoGrid {
     private void createEditButton(Button button, ToDoItem todoItem) {
         button.addThemeVariants(ButtonVariant.LUMO_ICON,
                 ButtonVariant.LUMO_TERTIARY);
-        button.addClickListener(e -> this.selectComplete(todoItem));
+        button.addClickListener(e -> this.showEditItemForm(todoItem));
         button.setIcon(new Icon(VaadinIcon.EDIT));
+    }
+    private void showEditItemForm(ToDoItem toDoItem){
+        ToDoFormView toDoFormView = new ToDoFormView("Edit to-do item",toDoItem, toDoItemService);
+        add(toDoFormView);
+        toDoFormView.addOpenedChangeListener(dialogCloseActionEvent -> updateList());
     }
 
     @Override

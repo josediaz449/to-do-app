@@ -67,7 +67,7 @@ public class TabSheetView extends Div {
     }
 
     private void showToDoForm() {
-        ToDoFormView toDoFormView = new ToDoFormView(toDoItemService);
+        ToDoFormView toDoFormView = new ToDoFormView("New to-do item",toDoItemService);
         add(toDoFormView);
         toDoFormView.addOpenedChangeListener(dialogCloseActionEvent -> toDoList.updateList());
     }

@@ -21,13 +21,27 @@ public class ToDoFormView extends Dialog {
     static private ComboBox<Priority> priority;
     static private TextField description;
     ToDoItemServiceImpl toDoItemService;
-    public ToDoFormView(ToDoItemServiceImpl toDoItemService) {
+    public ToDoFormView(String title, ToDoItemServiceImpl toDoItemService) {
         this.toDoItemService = toDoItemService;
-        this.setHeaderTitle("New to-do item");
+        this.setHeaderTitle(title);
         VerticalLayout dialogLayout = createDialogLayout();
         this.add(dialogLayout);
 
         Button saveButton = createSaveButton();
+        Button cancelButton = new Button("Cancel", e -> this.close());
+        this.getFooter().add(cancelButton);
+        this.getFooter().add(saveButton);
+
+        this.open();
+    }
+    public ToDoFormView(String title, ToDoItem toDoItem, ToDoItemServiceImpl toDoItemService) {
+        this.toDoItemService = toDoItemService;
+        this.setHeaderTitle(title);
+        VerticalLayout dialogLayout = createDialogLayout();
+        this.add(dialogLayout);
+        ToDoFormView.description.setValue(toDoItem.getDescription());
+        ToDoFormView.priority.setValue(toDoItem.getPriority());
+        Button saveButton = createSaveEditButton(toDoItem);
         Button cancelButton = new Button("Cancel", e -> this.close());
         this.getFooter().add(cancelButton);
         this.getFooter().add(saveButton);
@@ -61,6 +75,30 @@ public class ToDoFormView extends Dialog {
 
         return saveButton;
     }
+    private Button createSaveEditButton(ToDoItem toDoItem) {
+        Button saveButton = new Button("Add", e -> this.editItem(toDoItem));
+        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        return saveButton;
+    }
+    public void editItem(ToDoItem toDoItem){
+        if(description.isEmpty()||priority.isEmpty()){
+            Notification notification = createNotification();
+
+            Div text = new Div(new Text("Fill in all fields."));
+
+            Button closeButton = createNotificationCloseButton(notification);
+
+            HorizontalLayout layout = createHorizontalLayout(text, closeButton);
+
+            notification.add(layout);
+            notification.open();
+        }
+        else {
+            editToDoItem(toDoItem);
+        }
+    }
+
     public void saveItem(){
         if(description.isEmpty()||priority.isEmpty()){
             Notification notification = createNotification();
@@ -82,6 +120,12 @@ public class ToDoFormView extends Dialog {
     private void addNewToDoItem() {
         ToDoItem toDoItem = new ToDoItem(description.getValue(), priority.getValue());
         toDoItemService.createToDoItem(toDoItem);
+        this.close();
+    }
+    private void editToDoItem(ToDoItem toDoItem) {
+        toDoItem.setDescription(description.getValue());
+        toDoItem.setPriority(priority.getValue());
+        toDoItemService.updateToDoItem(toDoItem);
         this.close();
     }
 
