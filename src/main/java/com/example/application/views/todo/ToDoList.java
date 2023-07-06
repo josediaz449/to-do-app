@@ -28,6 +28,8 @@ public class ToDoList extends ToDoGrid {
                 .setAutoWidth(true);
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, this::createDeleteButton)).setHeader("Delete");
+        grid.addColumn(
+                new ComponentRenderer<>(Button::new, this::createEditButton)).setHeader("Edit");
     }
 
     private void createDeleteButton(Button button, ToDoItem todoItem) {
@@ -45,12 +47,18 @@ public class ToDoList extends ToDoGrid {
         button.addClickListener(e -> this.selectComplete(todoItem));
         button.setIcon(new Icon(VaadinIcon.CHECK));
     }
+    private void createEditButton(Button button, ToDoItem todoItem) {
+        button.addThemeVariants(ButtonVariant.LUMO_ICON,
+                ButtonVariant.LUMO_TERTIARY);
+        button.addClickListener(e -> this.selectComplete(todoItem));
+        button.setIcon(new Icon(VaadinIcon.EDIT));
+    }
 
     @Override
     void updateList() {
         List<ToDoItem> toDoItems = toDoItemService.getAllNotCompletedToDoItems();
         grid.setItems(toDoItems);
-        //
+        grid.setDetailsVisibleOnClick(true);
         grid.setAllRowsVisible(true);
     }
 }

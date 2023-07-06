@@ -26,6 +26,21 @@ public class ToDoItemServiceImpl implements ToDoItemService{
     }
 
     @Override
+    public List<ToDoItem> getAllNotCompletedToDoItemsByDateCreatedDESC() {
+        return toDoItemRepository.getAllNotCompletedToDoItemsByDateCreatedDESC();
+    }
+
+    @Override
+    public List<ToDoItem> getAllNotCompletedToDoItemsByDateCreatedASC() {
+        return toDoItemRepository.getAllNotCompletedToDoItemsByDateCreatedASC();
+    }
+
+    @Override
+    public List<ToDoItem> getAllNotCompletedToDoItemsByPriorityASC() {
+        return toDoItemRepository.getAllNotCompletedToDoItemsByPriorityASC();
+    }
+
+    @Override
     public ToDoItem getToDoItem(Long toDoItemId) {
         return toDoItemRepository.findById(toDoItemId).get();
     }

@@ -46,7 +46,7 @@ public class DoneList extends ToDoGrid{
         button.addThemeVariants(ButtonVariant.LUMO_ICON,
                 ButtonVariant.LUMO_TERTIARY);
         button.addClickListener(e -> this.toDoItemService.createToDoItem(new ToDoItem(todoItem.getDescription(),todoItem.getPriority())));
-        button.setIcon(new Icon(VaadinIcon.EDIT));
+        button.setIcon(new Icon(VaadinIcon.COPY));
     }
 
     private void createIncompleteButton(Button button, ToDoItem todoItem) {
@@ -54,13 +54,14 @@ public class DoneList extends ToDoGrid{
                 ButtonVariant.LUMO_ERROR,
                 ButtonVariant.LUMO_TERTIARY);
         button.addClickListener(e -> this.selectIncomplete(todoItem));
-        button.setIcon(new Icon(VaadinIcon.LIST));
+        button.setIcon(new Icon(VaadinIcon.LIST_UL));
     }
 
     @Override
     void updateList() {
         List<ToDoItem> toDoItems = toDoItemService.getAllCompletedToDoItems();
         grid.setItems(toDoItems);
+        grid.setDetailsVisibleOnClick(true);
         grid.setAllRowsVisible(true);
     }
 }
