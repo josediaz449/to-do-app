@@ -36,7 +36,7 @@ public class ToDoList extends ToDoGrid {
         button.addThemeVariants(ButtonVariant.LUMO_ICON,
                 ButtonVariant.LUMO_ERROR,
                 ButtonVariant.LUMO_TERTIARY);
-        button.addClickListener(e -> this.removeTodoItem(todoItem));
+        button.addClickListener(e -> this.deleteTodoItem(todoItem));
         button.setIcon(new Icon(VaadinIcon.TRASH));
     }
 
