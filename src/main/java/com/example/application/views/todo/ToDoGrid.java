@@ -3,6 +3,7 @@ package com.example.application.views.todo;
 import com.example.application.Entity.ToDoItem;
 import com.example.application.Service.ToDoItemServiceImpl;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
@@ -15,6 +16,7 @@ public abstract class ToDoGrid extends Div {
     public ToDoGrid(ToDoItemServiceImpl toDoItemService) {
         this.toDoItemService = toDoItemService;
         grid = new Grid<>(ToDoItem.class, false);
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
     }
     private static final SerializableBiConsumer<Span, ToDoItem> priorityComponentUpdater = (
             span, toDoItem) -> {

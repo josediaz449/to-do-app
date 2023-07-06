@@ -24,13 +24,13 @@ public class DoneList extends ToDoGrid{
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, this::createIncompleteButton)).setHeader("Mark as Incomplete").setAutoWidth(true);
         grid.addColumn(ToDoItem::getDescription).setHeader("Description")
-                .setAutoWidth(true);
+                .setAutoWidth(true).setSortable(true);
         grid.addColumn(createPriorityComponentRenderer()).setHeader("Priority")
-                .setAutoWidth(true);
+                .setAutoWidth(true).setSortable(true).setComparator(ToDoItem::getPriority);
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, this::createDeleteButton)).setHeader("Delete");
         grid.addColumn(ToDoItem::getDateCompleted).setHeader("Date Completed")
-                .setAutoWidth(true);
+                .setAutoWidth(true).setSortable(true);
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, this::createCopyButton)).setHeader("Copy over to To-Do").setAutoWidth(true);
 

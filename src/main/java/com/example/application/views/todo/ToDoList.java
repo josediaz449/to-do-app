@@ -23,9 +23,9 @@ public class ToDoList extends ToDoGrid {
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, this::createCompleteButton)).setHeader("Mark as Complete").setAutoWidth(true);
         grid.addColumn(ToDoItem::getDescription).setHeader("Description")
-                .setAutoWidth(true);
-        grid.addColumn(createPriorityComponentRenderer()).setHeader("Priority")
-                .setAutoWidth(true);
+                .setAutoWidth(true).setSortable(true);
+        grid.addColumn(createPriorityComponentRenderer()).setHeader("Priority").setComparator(ToDoItem::getPriority)
+                .setAutoWidth(true).setSortable(true);
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, this::createDeleteButton)).setHeader("Delete");
         grid.addColumn(
