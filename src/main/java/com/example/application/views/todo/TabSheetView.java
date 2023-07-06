@@ -11,21 +11,30 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.component.tabs.TabSheetVariant;
+import com.vaadin.flow.data.provider.ItemCountChangeEvent;
 
 public class TabSheetView extends Div {
     ToDoItemServiceImpl toDoItemService;
     ToDoList toDoList;
     DoneList doneList;
+    static Span toDoBadge;
+    Span completedBadge;
     public TabSheetView(ToDoItemServiceImpl toDoItemService) {
         this.toDoItemService =toDoItemService;
 
         TabSheet tabSheet = new TabSheet();
 
-        Tab toDo = createTab("To-Do");
-        Tab completed = createTab("Completed");
+        toDoBadge = createBadge(toDoItemService.getAllNotCompletedToDoItems().size());
+        completedBadge = createBadge(toDoItemService.getAllCompletedToDoItems().size());
+
+        Tab toDo = createTab("To-Do",toDoBadge);
+        Tab completed = createTab("Completed",completedBadge);
 
         toDoList = new ToDoList(toDoItemService);
         doneList = new DoneList(toDoItemService);
+
+        toDoList.grid.getListDataView().addItemCountChangeListener(this::updateToDoBadge);
+        doneList.grid.getListDataView().addItemCountChangeListener(this::updateCompletedBadge);
 
         tabSheet.addSelectedChangeListener(this::updateListOnTabChange);
 
@@ -38,10 +47,26 @@ public class TabSheetView extends Div {
         add(tabSheet);
     }
 
-    private static Tab createTab(String title) {
-        Tab tab = new Tab(new Span(title));
+    private void updateToDoBadge(ItemCountChangeEvent<?> countChange) {
+        toDoBadge.setText(String.valueOf(countChange.getItemCount()));
+        completedBadge.setText(String.valueOf(toDoItemService.getAllCompletedToDoItems().size()));
+    }
+
+    private void updateCompletedBadge(ItemCountChangeEvent<?> countChange) {
+        completedBadge.setText(String.valueOf(countChange.getItemCount()));
+        toDoBadge.setText(String.valueOf(toDoItemService.getAllNotCompletedToDoItems().size()));
+    }
+
+    private static Tab createTab(String title, Span badge) {
+        Tab tab = new Tab(new Span(title),badge);
         tab.addClassName(title);
         return tab;
+    }
+    private static Span createBadge(int value) {
+        Span badge = new Span(String.valueOf(value));
+        badge.getElement().getThemeList().add("badge small contrast");
+        badge.getStyle().set("margin-inline-start", "var(--lumo-space-xs)");
+        return badge;
     }
 
     private Button createAddButton() {

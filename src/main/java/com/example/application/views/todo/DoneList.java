@@ -24,7 +24,7 @@ public class DoneList extends ToDoGrid{
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, this::createIncompleteButton)).setHeader("Mark as Incomplete").setAutoWidth(true);
         grid.addColumn(ToDoItem::getDescription).setHeader("Description")
-                .setAutoWidth(true).setSortable(true);
+                .setAutoWidth(true).setFlexGrow(0).setSortable(true);
         grid.addColumn(createPriorityComponentRenderer()).setHeader("Priority")
                 .setAutoWidth(true).setSortable(true).setComparator(ToDoItem::getPriority);
         grid.addColumn(
