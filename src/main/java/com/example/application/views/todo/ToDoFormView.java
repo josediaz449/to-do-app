@@ -83,16 +83,7 @@ public class ToDoFormView extends Dialog {
     }
     public void editItem(ToDoItem toDoItem){
         if(description.isEmpty()||priority.isEmpty()){
-            Notification notification = createNotification();
-
-            Div text = new Div(new Text("Fill in all fields."));
-
-            Button closeButton = createNotificationCloseButton(notification);
-
-            HorizontalLayout layout = createHorizontalLayout(text, closeButton);
-
-            notification.add(layout);
-            notification.open();
+            openNotification();
         }
         else {
             editToDoItem(toDoItem);
@@ -101,20 +92,20 @@ public class ToDoFormView extends Dialog {
 
     public void saveItem(){
         if(description.isEmpty()||priority.isEmpty()){
-            Notification notification = createNotification();
-
-            Div text = new Div(new Text("Fill in all fields."));
-
-            Button closeButton = createNotificationCloseButton(notification);
-
-            HorizontalLayout layout = createHorizontalLayout(text, closeButton);
-
-            notification.add(layout);
-            notification.open();
+            openNotification();
         }
         else {
             addNewToDoItem();
         }
+    }
+
+    private static void openNotification() {
+        Notification notification = createNotification();
+        Div text = new Div(new Text("Fill in all fields."));
+        Button closeButton = createNotificationCloseButton(notification);
+        HorizontalLayout layout = createHorizontalLayout(text, closeButton);
+        notification.add(layout);
+        notification.open();
     }
 
     private void addNewToDoItem() {

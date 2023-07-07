@@ -24,17 +24,14 @@ public class TabSheetView extends Div {
 
         TabSheet tabSheet = new TabSheet();
 
-        toDoBadge = createBadge(toDoItemService.getAllNotCompletedToDoItems().size());
-        completedBadge = createBadge(toDoItemService.getAllCompletedToDoItems().size());
+        instantiateBadges(toDoItemService);
 
         Tab toDo = createTab("To-Do",toDoBadge);
         Tab completed = createTab("Completed",completedBadge);
 
-        toDoList = new ToDoList(toDoItemService);
-        doneList = new DoneList(toDoItemService);
+        instantiateLists(toDoItemService);
 
-        toDoList.grid.getListDataView().addItemCountChangeListener(this::updateToDoBadge);
-        doneList.grid.getListDataView().addItemCountChangeListener(this::updateCompletedBadge);
+        addItemCountChangeListenersToLists();
 
         tabSheet.addSelectedChangeListener(this::updateListOnTabChange);
 
@@ -45,6 +42,21 @@ public class TabSheetView extends Div {
 
         tabSheet.addThemeVariants(TabSheetVariant.LUMO_TABS_CENTERED);
         add(tabSheet);
+    }
+
+    private void addItemCountChangeListenersToLists() {
+        toDoList.grid.getListDataView().addItemCountChangeListener(this::updateToDoBadge);
+        doneList.grid.getListDataView().addItemCountChangeListener(this::updateCompletedBadge);
+    }
+
+    private void instantiateLists(ToDoItemServiceImpl toDoItemService) {
+        toDoList = new ToDoList(toDoItemService);
+        doneList = new DoneList(toDoItemService);
+    }
+
+    private void instantiateBadges(ToDoItemServiceImpl toDoItemService) {
+        toDoBadge = createBadge(toDoItemService.getAllNotCompletedToDoItems().size());
+        completedBadge = createBadge(toDoItemService.getAllCompletedToDoItems().size());
     }
 
     private void updateToDoBadge(ItemCountChangeEvent<?> countChange) {
