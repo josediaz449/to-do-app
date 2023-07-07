@@ -1,7 +1,6 @@
 # To-Do App
 
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
+To do app to keep track of items that need to get done and completed items.
 
 ## Running the application
 
